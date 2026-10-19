@@ -3,212 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perpranov AI — Academic & Educational Intelligence</title>
-    <!-- Favicon using your logo -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-    <!-- Tailwind CSS -->
+    <title>Perpranov AI - Academic Tutor</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Marked.js for formatting math/academic text -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        .gradient-brand {
-            background: linear-gradient(135deg, #00d2ff 0%, #7b2cbf 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        body {
+            background-color: #FAF8F5; /* Soft Light Golden Background */
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-cyan-500 selection:text-white">
+<body class="text-amber-950 flex flex-col h-screen">
 
-    <!-- Top Navigation -->
-    <header class="bg-slate-950/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
-            <!-- Brand & Logo -->
-            <div class="flex items-center gap-3">
-                <img 
-                    src="{{ url_for('static', filename='logo.png') }}" 
-                    alt="Perpranov AI Logo" 
-                    class="w-10 h-10 object-contain rounded-lg drop-shadow-[0_0_10px_rgba(0,210,255,0.4)]"
-                    onerror="this.src='https://placehold.co/40x40/00d2ff/ffffff?text=P.AI'"
-                >
-                <div>
-                    <h1 class="text-lg font-extrabold tracking-wider gradient-brand uppercase">Perpranov.AI</h1>
-                    <p class="text-[11px] text-slate-400 font-medium">Strict Academic Mentor &bull; LKG to PhD</p>
+    <!-- Redesigned Golden Header -->
+    <header class="bg-gradient-to-r from-amber-50 via-amber-100/60 to-amber-50 border-b border-amber-200/80 px-8 py-4 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-4">
+            <!-- Logo Container (Loads static/logo.png with smooth SVG fallback) -->
+            <div class="h-11 w-11 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center shadow-md shadow-amber-300/50 border border-amber-300 overflow-hidden flex-shrink-0">
+                <img src="{{ url_for('static', filename='logo.png') }}" 
+                     alt="Logo" 
+                     class="h-full w-full object-cover" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                
+                <div class="hidden text-white font-bold items-center justify-center h-full w-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6" />
+                    </svg>
                 </div>
             </div>
 
-            <!-- Student Academic Level Picker -->
-            <div class="flex items-center gap-2">
-                <label for="studentLevel" class="text-xs font-semibold text-slate-400">Class/Level:</label>
-                <select id="studentLevel" class="bg-slate-800 text-cyan-300 text-xs rounded-lg px-3 py-2 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
-                    <option value="LKG / UKG (Early Childhood)">LKG / UKG</option>
-                    <option value="Primary School (Grade 1-5)">Grade 1 - 5</option>
-                    <option value="Middle School (Grade 6-8)">Grade 6 - 8</option>
-                    <option value="High School (Grade 9-10)">Grade 9 - 10</option>
-                    <option value="Higher Secondary (Grade 11-12)">Grade 11 - 12 (HSC/CBSE)</option>
-                    <option value="Undergraduate (Bachelor's Degree)" selected>Undergraduate (College)</option>
-                    <option value="Postgraduate (Master's Degree)">Postgraduate (Master's)</option>
-                    <option value="Doctorate (PhD / Research)">Doctorate (PhD)</option>
-                </select>
+            <!-- Title & Subtitle Badge -->
+            <div>
+                <div class="flex items-center space-x-2">
+                    <h1 class="text-xl font-extrabold text-amber-950 tracking-wide font-sans">PERPRANOV.AI</h1>
+                    <span class="bg-amber-200/80 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300/60 uppercase tracking-wider">Tutor v2.0</span>
+                </div>
+                <p class="text-xs text-amber-800/80 font-medium">Multimodal Voice & Vision Academic Mentor</p>
             </div>
         </div>
+        
+        <!-- Voice Assistant Reply Toggle -->
+        <button id="tts-toggle" type="button" class="bg-white/80 hover:bg-amber-100/80 text-amber-900 border border-amber-300/70 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition flex items-center gap-2">
+            🔊 Voice Reply: <span id="tts-status" class="text-amber-600 font-bold">ON</span>
+        </button>
     </header>
 
-    <!-- Main Workspace -->
-    <main class="flex-1 max-w-5xl w-full mx-auto p-4 flex flex-col gap-4">
-        
-        <!-- Chat History Container -->
-        <div id="chatBox" class="flex-1 bg-slate-950/50 rounded-2xl border border-slate-800/80 p-5 overflow-y-auto space-y-5 shadow-2xl backdrop-blur-sm min-h-[500px] max-h-[68vh]">
-            
-            <!-- Welcome Banner with Brand Logo -->
-            <div class="flex items-start gap-3.5">
-                <img 
-                    src="{{ url_for('static', filename='logo.png') }}" 
-                    alt="Perpranov AI" 
-                    class="w-8 h-8 rounded-full border border-cyan-500/30 object-contain bg-slate-900 shrink-0 mt-1"
-                >
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-4 text-sm text-slate-300 max-w-2xl leading-relaxed shadow-sm">
-                    <p class="font-bold text-cyan-400 mb-1 flex items-center gap-1.5">
-                        <span>Perpranov AI Academic Engine Online</span>
-                    </p>
-                    Hello student! I am designed exclusively to assist you with subjects, derivations, exam model papers, PhD theses, conceptual explanations, and research across any language.
-                    <div class="mt-2 text-xs text-slate-400 bg-slate-950/60 p-2 rounded border border-slate-800">
-                        🛡️ <strong>Strict Policy:</strong> Casual conversation, adult topics, and non-educational queries are strictly blocked.
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Input Box -->
-        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 shadow-xl">
-            <form id="chatForm" class="flex flex-col sm:flex-row gap-2">
-                <textarea 
-                    id="userInput" 
-                    rows="2" 
-                    placeholder="Ask any educational question, curriculum query, or problem to solve... (Multi-language supported)" 
-                    class="flex-1 bg-transparent border-0 resize-none focus:outline-none p-2 text-sm text-slate-100 placeholder-slate-500"
-                    required
-                ></textarea>
-                <button 
-                    type="submit" 
-                    id="submitBtn"
-                    class="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-semibold px-6 py-2 rounded-xl text-sm transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 shrink-0 self-end sm:self-auto cursor-pointer"
-                >
-                    <span>Ask Perpranov</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </button>
-            </form>
-            <div class="mt-2 text-[11px] text-slate-500 text-center">
-                Perpranov AI strictly enforces educational boundaries. Inappropriate content will be rejected.
+    <!-- Main Chat Feed Area -->
+    <main id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-4 max-w-4xl w-full mx-auto">
+        <div class="flex items-start space-x-3">
+            <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
+            <div class="bg-white border border-amber-200/70 p-4 rounded-2xl shadow-sm max-w-xl text-amber-950">
+                Hello! I am Perpranov AI. Ask me any question, upload an image for analysis, or click 🎤 to speak your question!
             </div>
         </div>
-
     </main>
 
-    <!-- Client Script -->
+    <!-- Footer Controls -->
+    <footer class="bg-amber-50/90 border-t border-amber-200/60 p-4">
+        <form id="chat-form" class="max-w-4xl mx-auto flex items-center gap-3">
+            <!-- Image Upload -->
+            <label class="cursor-pointer bg-amber-100/80 hover:bg-amber-200/80 border border-amber-200/60 p-3 rounded-xl text-amber-800 flex items-center justify-center transition" title="Upload Image">
+                📎 <input type="file" id="image-input" accept="image/*" class="hidden">
+            </label>
+
+            <!-- Speech Microphone Button -->
+            <button type="button" id="mic-btn" class="bg-amber-100/80 hover:bg-amber-200/80 border border-amber-200/60 p-3 rounded-xl text-amber-800 flex items-center justify-center transition" title="Speak Question">
+                🎤
+            </button>
+
+            <!-- Text Prompt Input -->
+            <input type="text" id="query-input" placeholder="Ask any question or click 🎤 to speak..." class="flex-1 bg-white border border-amber-200 rounded-xl px-4 py-3 text-amber-950 placeholder-amber-700/50 focus:outline-none focus:ring-2 focus:ring-amber-400">
+            
+            <!-- Submit Button -->
+            <button type="submit" id="send-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-medium px-6 py-3 rounded-xl shadow-md shadow-amber-200 transition">Send</button>
+        </form>
+    </footer>
+
     <script>
-        const chatForm = document.getElementById('chatForm');
-        const userInput = document.getElementById('userInput');
-        const studentLevel = document.getElementById('studentLevel');
-        const chatBox = document.getElementById('chatBox');
-        const submitBtn = document.getElementById('submitBtn');
-        const LOGO_URL = "{{ url_for('static', filename='logo.png') }}";
+        const form = document.getElementById('chat-form');
+        const queryInput = document.getElementById('query-input');
+        const imageInput = document.getElementById('image-input');
+        const chatContainer = document.getElementById('chat-container');
+        const micBtn = document.getElementById('mic-btn');
+        const ttsToggle = document.getElementById('tts-toggle');
+        const ttsStatus = document.getElementById('tts-status');
 
-        // Shift+Enter for new line, Enter to submit
-        userInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                chatForm.dispatchEvent(new Event('submit'));
-            }
+        let voiceOutputEnabled = true;
+
+        ttsToggle.addEventListener('click', () => {
+            voiceOutputEnabled = !voiceOutputEnabled;
+            ttsStatus.textContent = voiceOutputEnabled ? "ON" : "OFF";
+            ttsStatus.className = voiceOutputEnabled ? "text-amber-600 font-bold" : "text-amber-400 font-bold";
+            if (!voiceOutputEnabled) window.speechSynthesis.cancel();
         });
 
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const query = userInput.value.trim();
-            if (!query) return;
-
-            // Render Student Question
-            appendMessage('user', query);
-            userInput.value = '';
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            const loadingId = appendLoadingIndicator();
-
-            try {
-                const res = await fetch('/ask_ai', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        query: query,
-                        level: studentLevel.value
-                    })
-                });
-
-                const data = await res.json();
-                removeLoadingIndicator(loadingId);
-                appendMessage('ai', data.response || "No answer generated.");
-            } catch (err) {
-                removeLoadingIndicator(loadingId);
-                appendMessage('ai', "I can only assist with academic and educational queries.");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        });
-
-        function appendMessage(sender, text) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'flex items-start gap-3 ' + (sender === 'user' ? 'justify-end' : '');
-
-            if (sender === 'user') {
-                wrapper.innerHTML = `
-                    <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-3 text-sm max-w-2xl whitespace-pre-wrap leading-relaxed shadow-md">
-                        ${escapeHtml(text)}
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 text-cyan-400 flex items-center justify-center font-bold text-xs shrink-0 mt-1">You</div>
-                `;
-            } else {
-                const parsedHtml = marked.parse(text);
-                wrapper.innerHTML = `
-                    <img src="${LOGO_URL}" class="w-8 h-8 rounded-full border border-cyan-500/40 object-contain bg-slate-900 shrink-0 mt-1">
-                    <div class="prose prose-invert prose-sm max-w-3xl bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-4 text-slate-200 leading-relaxed shadow-sm">
-                        ${parsedHtml}
-                    </div>
-                `;
-            }
-            chatBox.appendChild(wrapper);
-            chatBox.scrollTop = chatBox.scrollHeight;
+        function speakText(text) {
+            if (!voiceOutputEnabled || !('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
         }
 
-        function appendLoadingIndicator() {
-            const id = 'loading-' + Date.now();
-            const wrapper = document.createElement('div');
-            wrapper.id = id;
-            wrapper.className = 'flex items-start gap-3';
-            wrapper.innerHTML = `
-                <img src="${LOGO_URL}" class="w-8 h-8 rounded-full border border-cyan-500/40 object-contain bg-slate-900 shrink-0 mt-1">
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-xs text-cyan-400 italic flex items-center gap-2">
-                    <span class="inline-block w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></span>
-                    <span class="inline-block w-2 h-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                    <span class="inline-block w-2 h-2 bg-indigo-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-                    Perpranov AI is retrieving educational curriculum...
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            micBtn.addEventListener('click', () => {
+                try {
+                    micBtn.classList.add('bg-red-100', 'text-red-600', 'animate-pulse');
+                    recognition.start();
+                } catch (e) {
+                    console.error("Mic error:", e);
+                }
+            });
+
+            recognition.onresult = (event) => {
+                queryInput.value = event.results[0][0].transcript;
+                micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
+            };
+
+            recognition.onerror = () => micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
+            recognition.onend = () => micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
+        } else {
+            micBtn.style.display = 'none';
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = queryInput.value.trim();
+            const file = imageInput.files[0];
+
+            if (!text && !file) return;
+
+            let userHtml = `<div class="flex justify-end"><div class="bg-amber-500 text-white p-4 rounded-2xl max-w-xl shadow-sm">${text}`;
+            if (file) userHtml += `<br><span class="text-xs italic text-amber-100">[Attached Image: ${file.name}]</span>`;
+            userHtml += `</div></div>`;
+            chatContainer.innerHTML += userHtml;
+
+            queryInput.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            const loadingId = 'loading-' + Date.now();
+            chatContainer.innerHTML += `
+                <div id="${loadingId}" class="flex items-start space-x-3">
+                    <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
+                    <div class="bg-white border border-amber-200/70 p-4 rounded-2xl shadow-sm text-amber-700/60 italic">Thinking...</div>
                 </div>
             `;
-            chatBox.appendChild(wrapper);
-            chatBox.scrollTop = chatBox.scrollHeight;
-            return id;
-        }
+            chatContainer.scrollTop = chatContainer.scrollHeight;
 
-        function removeLoadingIndicator(id) {
-            const el = document.getElementById(id);
-            if (el) el.remove();
-        }
+            const formData = new FormData();
+            formData.append('query', text);
+            if (file) formData.append('image', file);
+            imageInput.value = '';
 
-        function escapeHtml(string) {
-            return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
+            try {
+                const res = await fetch('/ask_ai', { method: 'POST', body: formData });
+                const data = await res.json();
+
+                document.getElementById(loadingId)?.remove();
+                const answer = data.response || "No response received.";
+
+                chatContainer.innerHTML += `
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
+                        <div class="bg-white border border-amber-200/70 p-4 rounded-2xl shadow-sm max-w-xl text-amber-950 whitespace-pre-wrap">${answer}</div>
+                    </div>
+                `;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                speakText(answer);
+            } catch (err) {
+                console.error("Fetch Error:", err);
+                document.getElementById(loadingId)?.remove();
+                chatContainer.innerHTML += `
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
+                        <div class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl shadow-sm max-w-xl">Error communicating with backend server.</div>
+                    </div>
+                `;
+            }
+        });
     </script>
 </body>
 </html>
