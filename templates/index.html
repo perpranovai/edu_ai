@@ -1,8 +1,160 @@
-<!DOCTYPE html>
+k<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+    <title>Perpranov AI - Professional Academic Tutor</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Syncopate:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .heading-font { font-family: 'Syncopate', sans-serif; }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF5C0 0%, #F59E0B 35%, #D97706 70%, #FBBF24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 12px rgba(245, 158, 11, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 flex h-[100dvh] overflow-hidden transition-colors duration-300">
+
+    <!-- Sidebar: Search & Chat History -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 shadow-xl md:shadow-none">
+        <div class="p-4 flex-1 overflow-y-auto">
+            <div class="flex items-center justify-between mb-4 md:hidden">
+                <span class="font-bold text-sm text-slate-200">Menu</span>
+                <button id="close-sidebar" class="text-slate-500 hover:text-white p-1">✕</button>
+            </div>
+            
+            <!-- New Conversation Button -->
+            <button id="new-chat-btn" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md transition mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>New Conversation</span>
+            </button>
+
+            <!-- LHS CUSTOMIZATION CONTROLS -->
+            <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 mb-6 space-y-2.5">
+                <h3 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider px-1">Quick Settings</h3>
+
+                <!-- Theme Toggle Button -->
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-slate-300 font-medium">Theme:</span>
+                    <button id="theme-toggle" type="button" class="bg-slate-900 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition border border-slate-700 flex items-center gap-1.5">
+                        <span id="theme-icon">🌙</span> <span id="theme-label">Night</span>
+                    </button>
+                </div>
+
+                <!-- Voice Reply Toggle Button -->
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-slate-300 font-medium">Female Voice:</span>
+                    <button id="tts-toggle" type="button" class="bg-slate-900 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition border border-slate-700 flex items-center gap-1.5">
+                        🔊 <span id="tts-status" class="text-amber-400 font-bold">ON</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat History -->
+            <div>
+                <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 mb-2">Chat History</h3>
+                <div id="history-list" class="space-y-1"></div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500">
+            <span>Powered by Perpranov AI</span>
+            <button id="clear-history" class="text-red-500 hover:underline">Clear</button>
+        </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+    <!-- Main App Interface -->
+    <div class="flex-1 flex flex-col h-full w-full overflow-hidden">
+
+        <!-- Top Header -->
+        <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 px-4 md:px-6 py-3.5 flex justify-between items-center shadow-sm flex-shrink-0">
+            <div class="flex items-center space-x-3">
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl bg-slate-800 text-slate-200" title="Open Menu">
+                    ☰
+                </button>
+
+                <div class="h-9 w-9 md:h-10 md:w-10 bg-gradient-to-tr from-amber-500 to-amber-300 rounded-xl flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
+                    <img src="{{ url_for('static', filename='logo.png') }}" 
+                         alt="Logo" 
+                         class="h-full w-full object-cover" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden text-slate-950 font-bold items-center justify-center h-full w-full">P</div>
+                </div>
+                
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="heading-font text-sm md:text-lg font-extrabold tracking-wider gold-gradient-text uppercase">
+                            PERPRANOV.AI
+                        </h1>
+                        <span class="hidden sm:inline-block bg-amber-950/80 text-amber-300 border border-amber-500/50 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest shadow-sm">PRO TUTOR</span>
+                    </div>
+                    <p class="text-[10px] md:text-xs text-amber-200/60 font-medium tracking-wide">Multimodal Academic Intelligence</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chat Output Feed -->
+        <main id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 max-w-4xl w-full mx-auto">
+            <div class="flex items-start space-x-3">
+                <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-sm max-w-[85%] md:max-w-xl text-slate-100 leading-relaxed text-sm md:text-base">
+                    Hello! I am Perpranov AI, your multimodal academic assistant. Ask a question, attach an image, or click 🎤 to talk!
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Prompt Controls -->
+        <footer class="bg-slate-900/90 border-t border-slate-800 p-3 md:p-4 flex-shrink-0">
+            <form id="chat-form" class="max-w-4xl mx-auto flex items-center gap-2 md:gap-3">
+                <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 p-2.5 md:p-3 rounded-xl text-slate-300 transition flex items-center justify-center flex-shrink-0" title="Upload Image">
+                    📎 <input type="file" id="image-input" accept="image/*" class="hidden">
+                </label>
+
+                <button type="button" id="mic-btn" class="bg-slate-800 hover:bg-slate-700 p-2.5 md:p-3 rounded-xl text-slate-300 transition flex items-center justify-center flex-shrink-0" title="Speak Question">
+                    🎤
+                </button>
+
+                <input type="text" id="query-input" name="query" placeholder="Ask any question or speak..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 md:px-4 md:py-3 text-sm md:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 min-w-0">
+
+                <button type="submit" id="send-btn" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold px-4 md:px-6 py-2.5 md:py-3 rounded-xl transition shadow-md text-sm md:text-base flex-shrink-0">
+                    Send
+                </button>
+            </form>
+        </footer>
+    </div>
+
+    <!-- Interface Logic & Single Female Voice Reader -->
+=======
     <title>Perpranov AI - Academic Tutor</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -79,6 +231,7 @@
         </form>
     </footer>
 
+>>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
     <script>
         const form = document.getElementById('chat-form');
         const queryInput = document.getElementById('query-input');
@@ -87,6 +240,112 @@
         const micBtn = document.getElementById('mic-btn');
         const ttsToggle = document.getElementById('tts-toggle');
         const ttsStatus = document.getElementById('tts-status');
+<<<<<<< HEAD
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeLabel = document.getElementById('theme-label');
+        const historyList = document.getElementById('history-list');
+        const newChatBtn = document.getElementById('new-chat-btn');
+        const clearHistoryBtn = document.getElementById('clear-history');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        let voiceOutputEnabled = true;
+        let chatHistory = JSON.parse(localStorage.getItem('perpranov_history') || '[]');
+        let systemVoices = [];
+
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                systemVoices = window.speechSynthesis.getVoices();
+            }
+        }
+        loadVoices();
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function toggleMobileSidebar(open) {
+            if (open) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', () => toggleMobileSidebar(true));
+        closeSidebarBtn.addEventListener('click', () => toggleMobileSidebar(false));
+        sidebarOverlay.addEventListener('click', () => toggleMobileSidebar(false));
+
+        function applyAutoTheme() {
+            const currentHour = new Date().getHours();
+            const isNight = currentHour < 6 || currentHour >= 18;
+            setTheme(isNight ? 'dark' : 'light');
+        }
+
+        function setTheme(mode) {
+            if (mode === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeIcon.textContent = '☀️';
+                themeLabel.textContent = 'Day';
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.textContent = '🌙';
+                themeLabel.textContent = 'Night';
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+
+        applyAutoTheme();
+
+        ttsToggle.addEventListener('click', () => {
+            voiceOutputEnabled = !voiceOutputEnabled;
+            ttsStatus.textContent = voiceOutputEnabled ? "ON" : "OFF";
+            ttsStatus.className = voiceOutputEnabled ? "text-amber-400 font-bold" : "text-slate-500 font-bold";
+            if (!voiceOutputEnabled) window.speechSynthesis.cancel();
+        });
+
+        // Strip HTML and CSS tags so the voice never reads out styling code
+        function cleanHtmlForVoice(html) {
+            let temp = document.createElement("div");
+            temp.innerHTML = html;
+            return temp.textContent || temp.innerText || "";
+        }
+
+        // Single Smooth Female Voice Audio Output
+        function speakText(text) {
+            if (!voiceOutputEnabled || !('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+
+            const textToRead = cleanHtmlForVoice(text).trim();
+            if (!textToRead) return;
+
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            utterance.pitch = 1.15; // Natural Female Pitch
+            utterance.rate = 1.0;   // Clear speaking pace
+
+            if (systemVoices.length > 0) {
+                const femaleVoice = systemVoices.find(voice => {
+                    const name = voice.name.toLowerCase();
+                    return name.includes('female') || name.includes('zira') || name.includes('samantha') || name.includes('victoria') || name.includes('karen') || name.includes('google uk english female');
+                });
+
+                if (femaleVoice) {
+                    utterance.voice = femaleVoice;
+                } else {
+                    const engVoice = systemVoices.find(v => v.lang.startsWith('en'));
+                    if (engVoice) utterance.voice = engVoice;
+                }
+            }
+
+=======
 
         let voiceOutputEnabled = true;
 
@@ -102,6 +361,7 @@
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.rate = 1.0;
+>>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
             window.speechSynthesis.speak(utterance);
         }
 
@@ -114,6 +374,20 @@
 
             micBtn.addEventListener('click', () => {
                 try {
+<<<<<<< HEAD
+                    micBtn.classList.add('bg-red-900/50', 'text-red-400', 'animate-pulse');
+                    recognition.start();
+                } catch (e) { console.error("Mic error:", e); }
+            });
+
+            recognition.onresult = (e) => {
+                queryInput.value = e.results[0][0].transcript;
+                micBtn.classList.remove('bg-red-900/50', 'text-red-400', 'animate-pulse');
+            };
+
+            recognition.onerror = () => micBtn.classList.remove('bg-red-900/50', 'text-red-400', 'animate-pulse');
+            recognition.onend = () => micBtn.classList.remove('bg-red-900/50', 'text-red-400', 'animate-pulse');
+=======
                     micBtn.classList.add('bg-red-100', 'text-red-600', 'animate-pulse');
                     recognition.start();
                 } catch (e) {
@@ -128,10 +402,98 @@
 
             recognition.onerror = () => micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
             recognition.onend = () => micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
+>>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
         } else {
             micBtn.style.display = 'none';
         }
 
+<<<<<<< HEAD
+        function renderHistory() {
+            historyList.innerHTML = '';
+            chatHistory.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800 truncate transition";
+                btn.textContent = item.title;
+                btn.onclick = () => {
+                    loadHistoryItem(index);
+                    toggleMobileSidebar(false);
+                };
+                historyList.appendChild(btn);
+            });
+        }
+
+        function saveToHistory(userText, aiReply) {
+            const title = userText.length > 25 ? userText.substring(0, 25) + '...' : userText;
+            chatHistory.unshift({ title, userText, aiReply });
+            if (chatHistory.length > 20) chatHistory.pop();
+            localStorage.setItem('perpranov_history', JSON.stringify(chatHistory));
+            renderHistory();
+        }
+
+        function loadHistoryItem(index) {
+            const item = chatHistory[index];
+            if (!item) return;
+
+            chatContainer.innerHTML = `
+                <div class="flex justify-end"><div class="bg-amber-500 text-slate-950 p-4 rounded-2xl max-w-[85%] md:max-w-xl shadow-sm text-sm md:text-base font-medium">${item.userText}</div></div>
+                <div class="flex items-start space-x-3">
+                    <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-sm max-w-[85%] md:max-w-xl text-slate-100 whitespace-pre-wrap text-sm md:text-base">${item.aiReply}</div>
+                </div>
+            `;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        newChatBtn.addEventListener('click', () => {
+            chatContainer.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-sm max-w-[85%] md:max-w-xl text-slate-100 leading-relaxed text-sm md:text-base">
+                        Started a new conversation! Ask me anything or attach an image.
+                    </div>
+                </div>
+            `;
+            toggleMobileSidebar(false);
+        });
+
+        clearHistoryBtn.addEventListener('click', () => {
+            chatHistory = [];
+            localStorage.removeItem('perpranov_history');
+            renderHistory();
+        });
+
+        renderHistory();
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = queryInput.value.trim();
+            const file = imageInput.files[0];
+
+            if (!text && !file) return;
+
+            let userHtml = `<div class="flex justify-end"><div class="bg-amber-500 text-slate-950 p-4 rounded-2xl max-w-[85%] md:max-w-xl shadow-sm text-sm md:text-base font-medium">${text}`;
+            if (file) userHtml += `<br><span class="text-xs opacity-75 italic">[Attached Image: ${file.name}]</span>`;
+            userHtml += `</div></div>`;
+            chatContainer.innerHTML += userHtml;
+
+            queryInput.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            const loadingId = 'loading-' + Date.now();
+            chatContainer.innerHTML += `
+                <div id="${loadingId}" class="flex items-start space-x-3">
+                    <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-sm text-slate-400 italic text-sm md:text-base">Perpranov AI is analyzing...</div>
+                </div>
+            `;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            const formData = new FormData();
+            formData.append('query', text);
+            if (file) formData.append('image', file);
+            imageInput.value = '';
+
+=======
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const text = queryInput.value.trim();
@@ -161,6 +523,7 @@
             if (file) formData.append('image', file);
             imageInput.value = '';
 
+>>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
             try {
                 const res = await fetch('/ask_ai', { method: 'POST', body: formData });
                 const data = await res.json();
@@ -168,6 +531,42 @@
                 document.getElementById(loadingId)?.remove();
                 const answer = data.response || "No response received.";
 
+<<<<<<< HEAD
+                let responseCardHtml = `
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
+                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-sm max-w-[85%] md:max-w-xl text-slate-100 whitespace-pre-wrap text-sm md:text-base">
+                            ${answer}
+                `;
+
+                // If user asked to see creator pictures, render image cards
+                if (data.show_creators) {
+                    responseCardHtml += `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-slate-800/80 border border-amber-500/30 rounded-xl p-3 text-center">
+                                <img src="${data.amalan_img}" alt="Mr. Amalan Machado" class="w-24 h-24 rounded-full mx-auto object-cover border-2 border-amber-400 shadow-md mb-2" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Amalan+Machado&background=f59e0b&color=000';">
+                                <h4 class="font-bold text-amber-300 text-sm">Mr. Amalan Machado</h4>
+                                <p class="text-[11px] text-slate-400">Founder, Lawrence Joseph Techno</p>
+                            </div>
+                            <div class="bg-slate-800/80 border border-amber-500/30 rounded-xl p-3 text-center">
+                                <img src="${data.nithik_img}" alt="Nithik Roshan" class="w-24 h-24 rounded-full mx-auto object-cover border-2 border-amber-400 shadow-md mb-2" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Nithik+Roshan&background=f59e0b&color=000';">
+                                <h4 class="font-bold text-amber-300 text-sm">Mr. Nithik Roshan</h4>
+                                <p class="text-[11px] text-slate-400">Co-Founder & Creator</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                responseCardHtml += `</div></div>`;
+
+                chatContainer.innerHTML += responseCardHtml;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                saveToHistory(text || "Image Query", answer);
+                
+                // Voice speaks only the clean speech (Names only, no HTML/CSS)
+                speakText(data.speech || answer);
+=======
                 chatContainer.innerHTML += `
                     <div class="flex items-start space-x-3">
                         <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
@@ -176,13 +575,19 @@
                 `;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 speakText(answer);
+>>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
             } catch (err) {
                 console.error("Fetch Error:", err);
                 document.getElementById(loadingId)?.remove();
                 chatContainer.innerHTML += `
                     <div class="flex items-start space-x-3">
+<<<<<<< HEAD
+                        <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
+                        <div class="bg-red-950/80 text-red-300 border border-red-800 p-4 rounded-2xl shadow-sm max-w-[85%] md:max-w-xl text-sm md:text-base">Error communicating with backend server.</div>
+=======
                         <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
                         <div class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl shadow-sm max-w-xl">Error communicating with backend server.</div>
+>>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
                     </div>
                 `;
             }
