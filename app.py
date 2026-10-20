@@ -59,12 +59,12 @@ def ask_ai():
 
     q_lower = user_query.lower().strip()
 
-    # 1. Simple greetings
+    # 1. Greetings
     if q_lower in ["hi", "hii", "hello", "hey", "hola"]:
         msg = "Hello! How can I assist you with your studies today?"
         return jsonify({"response": msg, "speech": msg})
 
-    # 2. Keywords and stem matching (catches inventor, invenor, creator, ceator, founder)
+    # 2. Typos & root stems for creators / founders / inventors
     creator_stems = [
         "inv", "creat", "ceat", "found", "maker", "made you", "who made",
         "father", "parent", "owner", "developer", "dev"
@@ -76,7 +76,7 @@ def ask_ai():
     is_creator_query = any(stem in q_lower for stem in creator_stems)
     is_image_query = any(stem in q_lower for stem in image_stems)
 
-    # SHOW PICTURES CASE:
+    # SHOW FOUNDER PICTURES CASE:
     if is_creator_query and is_image_query:
         return jsonify({
             "response": "Here are the founders and creators of Perpranov AI:",
@@ -86,7 +86,7 @@ def ask_ai():
             "speech": "Mr. Amalan Machado and Mr. Nithik Roshan."
         })
 
-    # WHO CREATED YOU CASE (Text only):
+    # TEXT ONLY FOUNDER CASE:
     if is_creator_query and any(w in q_lower for w in ["who", "what", "you", "your", "name"]):
         msg = "Perpranov AI was invented and founded by Mr. Amalan Machado (founder of Lawrence Joseph Techno) along with Mr. Nithik Roshan."
         return jsonify({"response": msg, "speech": msg})
@@ -155,4 +155,5 @@ def ask_ai():
     return jsonify({"response": f"API Error: {last_error}", "speech": "An error occurred."}), 500
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=False)
+    # Run on 0.0.0.0:5000 so iptables redirects port 80 to it cleanly
+    app.run(host='0.0.0.0', port=5000, debug=False)
