@@ -1,0 +1,12 @@
+.env
+venv/
+__pycache__/
+*.pyc
+
+venv.old/
+venv.broken/
+*.log
+*.bak
+*.deb
+.agents/
+.claude/

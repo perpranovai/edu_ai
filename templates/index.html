@@ -1,10 +1,9 @@
-k<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>Perpranov AI - Professional Academic Tutor</title>
+    <title>Perpranov AI - Multimodal Academic Intelligence</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -38,10 +37,10 @@ k<!DOCTYPE html>
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 flex h-[100dvh] overflow-hidden transition-colors duration-300">
+<body class="bg-slate-950 text-slate-100 flex h-[100dvh] w-screen overflow-hidden">
 
-    <!-- Sidebar: Search & Chat History -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 shadow-xl md:shadow-none">
+    <!-- Sidebar: Settings & Chat History -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 shadow-xl md:shadow-none flex-shrink-0">
         <div class="p-4 flex-1 overflow-y-auto">
             <div class="flex items-center justify-between mb-4 md:hidden">
                 <span class="font-bold text-sm text-slate-200">Menu</span>
@@ -56,11 +55,10 @@ k<!DOCTYPE html>
                 <span>New Conversation</span>
             </button>
 
-            <!-- LHS CUSTOMIZATION CONTROLS -->
+            <!-- Quick Settings -->
             <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 mb-6 space-y-2.5">
                 <h3 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider px-1">Quick Settings</h3>
 
-                <!-- Theme Toggle Button -->
                 <div class="flex items-center justify-between">
                     <span class="text-xs text-slate-300 font-medium">Theme:</span>
                     <button id="theme-toggle" type="button" class="bg-slate-900 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition border border-slate-700 flex items-center gap-1.5">
@@ -68,7 +66,6 @@ k<!DOCTYPE html>
                     </button>
                 </div>
 
-                <!-- Voice Reply Toggle Button -->
                 <div class="flex items-center justify-between">
                     <span class="text-xs text-slate-300 font-medium">Female Voice:</span>
                     <button id="tts-toggle" type="button" class="bg-slate-900 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition border border-slate-700 flex items-center gap-1.5">
@@ -90,11 +87,10 @@ k<!DOCTYPE html>
         </div>
     </aside>
 
-    <!-- Overlay for mobile sidebar -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
-    <!-- Main App Interface -->
-    <div class="flex-1 flex flex-col h-full w-full overflow-hidden">
+    <!-- Main Chat Workspace -->
+    <div class="flex-1 flex flex-col h-full min-w-0 bg-slate-950 overflow-hidden">
 
         <!-- Top Header -->
         <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 px-4 md:px-6 py-3.5 flex justify-between items-center shadow-sm flex-shrink-0">
@@ -103,12 +99,13 @@ k<!DOCTYPE html>
                     ☰
                 </button>
 
-                <div class="h-9 w-9 md:h-10 md:w-10 bg-gradient-to-tr from-amber-500 to-amber-300 rounded-xl flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
+                <!-- Logo with safe fallback -->
+                <div class="h-10 w-10 bg-gradient-to-tr from-amber-500 to-amber-300 rounded-xl flex items-center justify-center shadow-md overflow-hidden flex-shrink-0 border border-amber-400/40">
                     <img src="{{ url_for('static', filename='logo.png') }}" 
                          alt="Logo" 
                          class="h-full w-full object-cover" 
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="hidden text-slate-950 font-bold items-center justify-center h-full w-full">P</div>
+                    <div class="hidden text-slate-950 font-black items-center justify-center h-full w-full text-lg">P</div>
                 </div>
                 
                 <div>
@@ -123,7 +120,7 @@ k<!DOCTYPE html>
             </div>
         </header>
 
-        <!-- Chat Output Feed -->
+        <!-- Message Feed -->
         <main id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 max-w-4xl w-full mx-auto">
             <div class="flex items-start space-x-3">
                 <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
@@ -133,7 +130,7 @@ k<!DOCTYPE html>
             </div>
         </main>
 
-        <!-- Bottom Prompt Controls -->
+        <!-- Bottom Input Bar -->
         <footer class="bg-slate-900/90 border-t border-slate-800 p-3 md:p-4 flex-shrink-0">
             <form id="chat-form" class="max-w-4xl mx-auto flex items-center gap-2 md:gap-3">
                 <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 p-2.5 md:p-3 rounded-xl text-slate-300 transition flex items-center justify-center flex-shrink-0" title="Upload Image">
@@ -153,85 +150,6 @@ k<!DOCTYPE html>
         </footer>
     </div>
 
-    <!-- Interface Logic & Single Female Voice Reader -->
-=======
-    <title>Perpranov AI - Academic Tutor</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background-color: #FAF8F5; /* Soft Light Golden Background */
-        }
-    </style>
-</head>
-<body class="text-amber-950 flex flex-col h-screen">
-
-    <!-- Redesigned Golden Header -->
-    <header class="bg-gradient-to-r from-amber-50 via-amber-100/60 to-amber-50 border-b border-amber-200/80 px-8 py-4 flex justify-between items-center shadow-sm">
-        <div class="flex items-center space-x-4">
-            <!-- Logo Container (Loads static/logo.png with smooth SVG fallback) -->
-            <div class="h-11 w-11 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center shadow-md shadow-amber-300/50 border border-amber-300 overflow-hidden flex-shrink-0">
-                <img src="{{ url_for('static', filename='logo.png') }}" 
-                     alt="Logo" 
-                     class="h-full w-full object-cover" 
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                
-                <div class="hidden text-white font-bold items-center justify-center h-full w-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6" />
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Title & Subtitle Badge -->
-            <div>
-                <div class="flex items-center space-x-2">
-                    <h1 class="text-xl font-extrabold text-amber-950 tracking-wide font-sans">PERPRANOV.AI</h1>
-                    <span class="bg-amber-200/80 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300/60 uppercase tracking-wider">Tutor v2.0</span>
-                </div>
-                <p class="text-xs text-amber-800/80 font-medium">Multimodal Voice & Vision Academic Mentor</p>
-            </div>
-        </div>
-        
-        <!-- Voice Assistant Reply Toggle -->
-        <button id="tts-toggle" type="button" class="bg-white/80 hover:bg-amber-100/80 text-amber-900 border border-amber-300/70 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition flex items-center gap-2">
-            🔊 Voice Reply: <span id="tts-status" class="text-amber-600 font-bold">ON</span>
-        </button>
-    </header>
-
-    <!-- Main Chat Feed Area -->
-    <main id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-4 max-w-4xl w-full mx-auto">
-        <div class="flex items-start space-x-3">
-            <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
-            <div class="bg-white border border-amber-200/70 p-4 rounded-2xl shadow-sm max-w-xl text-amber-950">
-                Hello! I am Perpranov AI. Ask me any question, upload an image for analysis, or click 🎤 to speak your question!
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer Controls -->
-    <footer class="bg-amber-50/90 border-t border-amber-200/60 p-4">
-        <form id="chat-form" class="max-w-4xl mx-auto flex items-center gap-3">
-            <!-- Image Upload -->
-            <label class="cursor-pointer bg-amber-100/80 hover:bg-amber-200/80 border border-amber-200/60 p-3 rounded-xl text-amber-800 flex items-center justify-center transition" title="Upload Image">
-                📎 <input type="file" id="image-input" accept="image/*" class="hidden">
-            </label>
-
-            <!-- Speech Microphone Button -->
-            <button type="button" id="mic-btn" class="bg-amber-100/80 hover:bg-amber-200/80 border border-amber-200/60 p-3 rounded-xl text-amber-800 flex items-center justify-center transition" title="Speak Question">
-                🎤
-            </button>
-
-            <!-- Text Prompt Input -->
-            <input type="text" id="query-input" placeholder="Ask any question or click 🎤 to speak..." class="flex-1 bg-white border border-amber-200 rounded-xl px-4 py-3 text-amber-950 placeholder-amber-700/50 focus:outline-none focus:ring-2 focus:ring-amber-400">
-            
-            <!-- Submit Button -->
-            <button type="submit" id="send-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-medium px-6 py-3 rounded-xl shadow-md shadow-amber-200 transition">Send</button>
-        </form>
-    </footer>
-
->>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
     <script>
         const form = document.getElementById('chat-form');
         const queryInput = document.getElementById('query-input');
@@ -240,7 +158,6 @@ k<!DOCTYPE html>
         const micBtn = document.getElementById('mic-btn');
         const ttsToggle = document.getElementById('tts-toggle');
         const ttsStatus = document.getElementById('tts-status');
-<<<<<<< HEAD
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const themeLabel = document.getElementById('theme-label');
@@ -280,12 +197,6 @@ k<!DOCTYPE html>
         closeSidebarBtn.addEventListener('click', () => toggleMobileSidebar(false));
         sidebarOverlay.addEventListener('click', () => toggleMobileSidebar(false));
 
-        function applyAutoTheme() {
-            const currentHour = new Date().getHours();
-            const isNight = currentHour < 6 || currentHour >= 18;
-            setTheme(isNight ? 'dark' : 'light');
-        }
-
         function setTheme(mode) {
             if (mode === 'dark') {
                 document.documentElement.classList.add('dark');
@@ -303,8 +214,6 @@ k<!DOCTYPE html>
             setTheme(isDark ? 'light' : 'dark');
         });
 
-        applyAutoTheme();
-
         ttsToggle.addEventListener('click', () => {
             voiceOutputEnabled = !voiceOutputEnabled;
             ttsStatus.textContent = voiceOutputEnabled ? "ON" : "OFF";
@@ -312,14 +221,13 @@ k<!DOCTYPE html>
             if (!voiceOutputEnabled) window.speechSynthesis.cancel();
         });
 
-        // Strip HTML and CSS tags so the voice never reads out styling code
+        // Strip HTML tags so voice never reads code or CSS
         function cleanHtmlForVoice(html) {
             let temp = document.createElement("div");
             temp.innerHTML = html;
             return temp.textContent || temp.innerText || "";
         }
 
-        // Single Smooth Female Voice Audio Output
         function speakText(text) {
             if (!voiceOutputEnabled || !('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
@@ -328,15 +236,14 @@ k<!DOCTYPE html>
             if (!textToRead) return;
 
             const utterance = new SpeechSynthesisUtterance(textToRead);
-            utterance.pitch = 1.15; // Natural Female Pitch
-            utterance.rate = 1.0;   // Clear speaking pace
+            utterance.pitch = 1.15;
+            utterance.rate = 1.0;
 
             if (systemVoices.length > 0) {
                 const femaleVoice = systemVoices.find(voice => {
                     const name = voice.name.toLowerCase();
                     return name.includes('female') || name.includes('zira') || name.includes('samantha') || name.includes('victoria') || name.includes('karen') || name.includes('google uk english female');
                 });
-
                 if (femaleVoice) {
                     utterance.voice = femaleVoice;
                 } else {
@@ -344,24 +251,6 @@ k<!DOCTYPE html>
                     if (engVoice) utterance.voice = engVoice;
                 }
             }
-
-=======
-
-        let voiceOutputEnabled = true;
-
-        ttsToggle.addEventListener('click', () => {
-            voiceOutputEnabled = !voiceOutputEnabled;
-            ttsStatus.textContent = voiceOutputEnabled ? "ON" : "OFF";
-            ttsStatus.className = voiceOutputEnabled ? "text-amber-600 font-bold" : "text-amber-400 font-bold";
-            if (!voiceOutputEnabled) window.speechSynthesis.cancel();
-        });
-
-        function speakText(text) {
-            if (!voiceOutputEnabled || !('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 1.0;
->>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
             window.speechSynthesis.speak(utterance);
         }
 
@@ -374,7 +263,6 @@ k<!DOCTYPE html>
 
             micBtn.addEventListener('click', () => {
                 try {
-<<<<<<< HEAD
                     micBtn.classList.add('bg-red-900/50', 'text-red-400', 'animate-pulse');
                     recognition.start();
                 } catch (e) { console.error("Mic error:", e); }
@@ -387,27 +275,10 @@ k<!DOCTYPE html>
 
             recognition.onerror = () => micBtn.classList.remove('bg-red-900/50', 'text-red-400', 'animate-pulse');
             recognition.onend = () => micBtn.classList.remove('bg-red-900/50', 'text-red-400', 'animate-pulse');
-=======
-                    micBtn.classList.add('bg-red-100', 'text-red-600', 'animate-pulse');
-                    recognition.start();
-                } catch (e) {
-                    console.error("Mic error:", e);
-                }
-            });
-
-            recognition.onresult = (event) => {
-                queryInput.value = event.results[0][0].transcript;
-                micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
-            };
-
-            recognition.onerror = () => micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
-            recognition.onend = () => micBtn.classList.remove('bg-red-100', 'text-red-600', 'animate-pulse');
->>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
         } else {
             micBtn.style.display = 'none';
         }
 
-<<<<<<< HEAD
         function renderHistory() {
             historyList.innerHTML = '';
             chatHistory.forEach((item, index) => {
@@ -493,37 +364,6 @@ k<!DOCTYPE html>
             if (file) formData.append('image', file);
             imageInput.value = '';
 
-=======
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const text = queryInput.value.trim();
-            const file = imageInput.files[0];
-
-            if (!text && !file) return;
-
-            let userHtml = `<div class="flex justify-end"><div class="bg-amber-500 text-white p-4 rounded-2xl max-w-xl shadow-sm">${text}`;
-            if (file) userHtml += `<br><span class="text-xs italic text-amber-100">[Attached Image: ${file.name}]</span>`;
-            userHtml += `</div></div>`;
-            chatContainer.innerHTML += userHtml;
-
-            queryInput.value = '';
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            const loadingId = 'loading-' + Date.now();
-            chatContainer.innerHTML += `
-                <div id="${loadingId}" class="flex items-start space-x-3">
-                    <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
-                    <div class="bg-white border border-amber-200/70 p-4 rounded-2xl shadow-sm text-amber-700/60 italic">Thinking...</div>
-                </div>
-            `;
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            const formData = new FormData();
-            formData.append('query', text);
-            if (file) formData.append('image', file);
-            imageInput.value = '';
-
->>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
             try {
                 const res = await fetch('/ask_ai', { method: 'POST', body: formData });
                 const data = await res.json();
@@ -531,7 +371,6 @@ k<!DOCTYPE html>
                 document.getElementById(loadingId)?.remove();
                 const answer = data.response || "No response received.";
 
-<<<<<<< HEAD
                 let responseCardHtml = `
                     <div class="flex items-start space-x-3">
                         <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
@@ -539,7 +378,7 @@ k<!DOCTYPE html>
                             ${answer}
                 `;
 
-                // If user asked to see creator pictures, render image cards
+                // Render circular cards for founders if requested
                 if (data.show_creators) {
                     responseCardHtml += `
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
@@ -558,36 +397,18 @@ k<!DOCTYPE html>
                 }
 
                 responseCardHtml += `</div></div>`;
-
                 chatContainer.innerHTML += responseCardHtml;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
 
                 saveToHistory(text || "Image Query", answer);
-                
-                // Voice speaks only the clean speech (Names only, no HTML/CSS)
                 speakText(data.speech || answer);
-=======
-                chatContainer.innerHTML += `
-                    <div class="flex items-start space-x-3">
-                        <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
-                        <div class="bg-white border border-amber-200/70 p-4 rounded-2xl shadow-sm max-w-xl text-amber-950 whitespace-pre-wrap">${answer}</div>
-                    </div>
-                `;
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-                speakText(answer);
->>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
             } catch (err) {
                 console.error("Fetch Error:", err);
                 document.getElementById(loadingId)?.remove();
                 chatContainer.innerHTML += `
                     <div class="flex items-start space-x-3">
-<<<<<<< HEAD
                         <div class="bg-amber-500 text-slate-950 rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 text-sm shadow-sm">AI</div>
                         <div class="bg-red-950/80 text-red-300 border border-red-800 p-4 rounded-2xl shadow-sm max-w-[85%] md:max-w-xl text-sm md:text-base">Error communicating with backend server.</div>
-=======
-                        <div class="bg-amber-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">AI</div>
-                        <div class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl shadow-sm max-w-xl">Error communicating with backend server.</div>
->>>>>>> ee08fbf5705138189c541790ba2016f846f24b8c
                     </div>
                 `;
             }

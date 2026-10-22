@@ -10,8 +10,8 @@ load_dotenv()
 
 app = Flask(__name__)
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AQ.Ab8RN6LDHlIh2SNrl2fEIboF2-oQX2Nbq9YLJyBIcrhbMWAbTw")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "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")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 gemini_client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
@@ -55,43 +55,38 @@ def ask_ai():
         mime_type = uploaded_file.mimetype
 
     if not user_query and not image_bytes:
-        return jsonify({"response": "Please enter a question or upload an image.", "speech": "Please enter a question or upload an image."}), 400
+        return jsonify({"response": "Please enter a question or upload an image."}), 400
 
     q_lower = user_query.lower().strip()
 
-    # 1. Simple greetings
     if q_lower in ["hi", "hii", "hello", "hey", "hola"]:
-        msg = "Hello! How can I assist you with your studies today?"
-        return jsonify({"response": msg, "speech": msg})
+        return jsonify({"response": "Hello! How can I assist you with your studies today?"})
 
-    # 2. Keywords and stem matching (catches inventor, invenor, creator, ceator, founder)
-    creator_stems = [
-        "inv", "creat", "ceat", "found", "maker", "made you", "who made",
-        "father", "parent", "owner", "developer", "dev"
-    ]
-    image_stems = [
-        "pic", "photo", "image", "img", "face", "look", "see", "show"
-    ]
+    creator_keywords = ["invented", "created", "made you", "creator", "founded", "founder", "father", "parent", "dad", "maker"]
+    if any(phrase in q_lower for phrase in creator_keywords):
+        if any(p in q_lower for p in ["picture", "photo", "show", "image", "pic"]):
+            html_response = (
+                "Here are the founders and creators of Perpranov AI:<br><br>"
+                "<div style='display: flex; gap: 20px; margin-top: 10px;'>"
+                "  <div style='text-align: center;'>"
+                f"    <img src='{url_for('static', filename='amalan.jpg')}' style='width: 120px; height: 140px; border-radius: 8px; border: 2px solid #ff9f43; object-fit: cover;'><br>"
+                "    <span style='font-size: 13px; color: #fff; font-weight: bold; display: block; margin-top: 5px;'>Mr. Amalan Machado</span><br>"
+                "    <span style='font-size: 11px; color: #bbb; display: block; margin-top: 3px;'>Founder, Perpranov AI<br>Founder, Lawrence &amp; Joseph Techno</span>"
+                "  </div>"
+                "  <div style='text-align: center;'>"
+                f"    <img src='{url_for('static', filename='nithik.jpg')}' style='width: 120px; height: 140px; border-radius: 8px; border: 2px solid #ff9f43; object-fit: cover;'><br>"
+                "    <span style='font-size: 13px; color: #fff; font-weight: bold; display: block; margin-top: 5px;'>Mr. Nithik Roshan</span><br>"
+                "    <span style='font-size: 11px; color: #bbb; display: block; margin-top: 3px;'>Co-Founder &amp; Designer, Perpranov AI</span>"
+                "  </div>"
+                "</div>"
+            )
 
-    is_creator_query = any(stem in q_lower for stem in creator_stems)
-    is_image_query = any(stem in q_lower for stem in image_stems)
-
-    # SHOW PICTURES CASE:
-    if is_creator_query and is_image_query:
-        return jsonify({
-            "response": "Here are the founders and creators of Perpranov AI:",
-            "show_creators": True,
-            "amalan_img": url_for('static', filename='amalan.jpg'),
-            "nithik_img": url_for('static', filename='nithik.jpg'),
-            "speech": "Mr. Amalan Machado and Mr. Nithik Roshan."
-        })
-
-    # WHO CREATED YOU CASE (Text only):
-    if is_creator_query and any(w in q_lower for w in ["who", "what", "you", "your", "name"]):
-        msg = "Perpranov AI was invented and founded by Mr. Amalan Machado (founder of Lawrence Joseph Techno) along with Mr. Nithik Roshan."
-        return jsonify({"response": msg, "speech": msg})
+            return jsonify({"response": html_response})
+        
+        return jsonify({"response": "Perpranov AI was founded by Mr. Amalan Machado, Founder of Perpranov AI and of Lawrence & Joseph Techno, along with Mr. Nithik Roshan, Co-Founder and Designer of Perpranov AI."})
 
     current_time_str = datetime.now().strftime("%A, %B %d, %Y, %I:%M %p")
+    
     system_instruction = (
         f"Your name is Perpranov AI. You are an expert academic tutor. "
         f"You were completely invented, created, and founded by Mr. Amalan Machado (founder of Lawrence Joseph Techno) along with Mr. Nithik Roshan. "
@@ -103,9 +98,8 @@ def ask_ai():
 
     last_error = "API request failed."
 
-    # Strategy 1: Gemini Vision
     if image_bytes and mime_type and gemini_client:
-        config = types.GenerateContentConfig(system_instruction=system_instruction, temperature=0.2)
+        config = types.GenerateContentConfig(system_instruction=system_instruction, temperature=0.2, max_output_tokens=600, thinking_config=types.ThinkingConfig(thinking_budget=0))
         for model_name in MODELS_LIST:
             try:
                 response = gemini_client.models.generate_content(
@@ -117,12 +111,11 @@ def ask_ai():
                     config=config
                 )
                 if response and response.text:
-                    return jsonify({"response": response.text, "speech": response.text})
+                    return jsonify({"response": response.text})
             except Exception as e:
                 last_error = str(e)
                 continue
 
-    # Strategy 2: OpenAI Text
     if openai_client:
         try:
             response = openai_client.chat.completions.create(
@@ -134,25 +127,24 @@ def ask_ai():
                 temperature=0.2,
                 max_tokens=800
             )
-            answer = response.choices[0].message.content
+            answer = response.choices.message.content
             if answer:
-                return jsonify({"response": answer, "speech": answer})
+                return jsonify({"response": answer})
         except Exception as e:
             last_error = str(e)
 
-    # Strategy 3: Gemini Fallback
     if gemini_client:
-        config = types.GenerateContentConfig(system_instruction=system_instruction, temperature=0.2)
+        config = types.GenerateContentConfig(system_instruction=system_instruction, temperature=0.2, max_output_tokens=600, thinking_config=types.ThinkingConfig(thinking_budget=0))
         for model_name in MODELS_LIST:
             try:
                 response = gemini_client.models.generate_content(model=model_name, contents=user_query, config=config)
                 if response and response.text:
-                    return jsonify({"response": response.text, "speech": response.text})
+                    return jsonify({"response": response.text})
             except Exception as e:
                 last_error = str(e)
                 continue
 
-    return jsonify({"response": f"API Error: {last_error}", "speech": "An error occurred."}), 500
+    return jsonify({"response": f"API Error: {last_error}"}), 500
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=False)
+    import sys; port = int(sys.argv[sys.argv.index("--port")+1]) if "--port" in sys.argv else 5000; app.run(host="127.0.0.1", port=9999, debug=False)
