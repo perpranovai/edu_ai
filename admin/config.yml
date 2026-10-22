@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: perpranoval/edu_ai
+  repo: perpranovai/edu_ai
   branch: main
 
 media_folder: "images"
